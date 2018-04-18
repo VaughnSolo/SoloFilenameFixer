@@ -11,9 +11,9 @@ using System.IO;
 
 namespace SoloFilenameFixer
 {
-    public partial class Form1 : Form
+    public partial class Main : Form
     {
-        public Form1()
+        public Main()
         {
             InitializeComponent();
         }
@@ -22,15 +22,23 @@ namespace SoloFilenameFixer
         {
             FolderBrowserDialog folder = new FolderBrowserDialog();
             folder.ShowDialog();
-            textBoxFolderPath.Text = folder.SelectedPath;
-            loadFiles();
+            if (folder.SelectedPath != "")
+            {
+                textBoxFolderPath.Text = folder.SelectedPath;
+                loadFiles();
+            }
         }
         private void loadFiles()
         {
             fileListBox.Items.Clear();
-            fileListBox.Items.Add("Parent Directory");
+            fileListBox.Items.Add("[Parent Directory]");
             try
             {
+                string[] folderNames = Directory.GetDirectories(textBoxFolderPath.Text);
+                foreach (String name in folderNames)
+                {
+                    fileListBox.Items.Add(name.Substring(name.LastIndexOf('\\') + 1));
+                }
                 string[] fileNames = Directory.GetFiles(textBoxFolderPath.Text);
                 foreach (String name in fileNames)
                 {
@@ -61,7 +69,7 @@ namespace SoloFilenameFixer
             return ret;
         }
         // Strip a path to find only the path preceeding final slash.
-        private string findPath(string path)
+        private string StripPathToSlash(string path)
         {
             string ret = "";
             int finalSlash = path.LastIndexOf('\\');
@@ -71,15 +79,31 @@ namespace SoloFilenameFixer
             }
             return ret;
         }
-
         private void fileListBox_DoubleClick(object sender, EventArgs e)
         {
             int index = fileListBox.SelectedIndex;
             if (index == 0)
             {
-                textBoxFolderPath.Text = findPath(textBoxFolderPath.Text);
+                textBoxFolderPath.Text = StripPathToSlash(textBoxFolderPath.Text);
                 loadFiles();
             }
+            else if (SelectedIsFolder())
+            {
+                string fileFolderName = fileListBox.Items[fileListBox.SelectedIndex].ToString();
+                textBoxFolderPath.Text += '\\' + fileFolderName;
+                loadFiles();
+            }
+        }
+        private bool SelectedIsFolder()
+        {
+            string fileFolderName = fileListBox.Items[fileListBox.SelectedIndex].ToString();
+            int finalSlash = fileFolderName.LastIndexOf('\\');
+            if (finalSlash == -1)
+            {
+
+                return true;
+            }
+            return false;
         }
     }
 }

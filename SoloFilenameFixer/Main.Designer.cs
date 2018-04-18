@@ -1,6 +1,6 @@
 ﻿namespace SoloFilenameFixer
 {
-    partial class Form1
+    partial class Main
     {
         /// <summary>
         /// Required designer variable.
@@ -99,15 +99,16 @@
             // 
             this.textBoxFolderPath.Location = new System.Drawing.Point(6, 19);
             this.textBoxFolderPath.Name = "textBoxFolderPath";
+            this.textBoxFolderPath.ReadOnly = true;
             this.textBoxFolderPath.Size = new System.Drawing.Size(387, 20);
-            this.textBoxFolderPath.TabIndex = 0;
+            this.textBoxFolderPath.TabIndex = 1;
             // 
             // buttonLocation
             // 
             this.buttonLocation.Location = new System.Drawing.Point(399, 18);
             this.buttonLocation.Name = "buttonLocation";
             this.buttonLocation.Size = new System.Drawing.Size(95, 20);
-            this.buttonLocation.TabIndex = 1;
+            this.buttonLocation.TabIndex = 0;
             this.buttonLocation.Text = "Choose Location";
             this.buttonLocation.UseVisualStyleBackColor = true;
             this.buttonLocation.Click += new System.EventHandler(this.buttonLocation_Click);
